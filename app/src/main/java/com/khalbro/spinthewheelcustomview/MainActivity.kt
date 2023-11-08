@@ -6,6 +6,8 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
+import coil.clear
+import coil.load
 import com.khalbro.spinthewheelcustomview.databinding.ActivityMainBinding
 import kotlin.random.Random
 
@@ -13,19 +15,28 @@ const val FACTOR = 25.71f
 
 class MainActivity : AppCompatActivity() {
 
+    private val imvUrl = "https://placebear.com/200/300"
+
     private lateinit var binding: ActivityMainBinding
     private var random: Random? = null
     private var degreeOld = 0
     private var degreeNew = 0
-    private val colorSectors = arrayOf("GREEN", "BLUE", "INDIGO", "VIOLET", "RED", "ORANGE", "YELLOW")
+    private val textStorage = TextStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.tvResult
         binding.imvWheel
         random = Random
+
+        selectAction()
+
+        binding.btnReset.setOnClickListener {
+            resetResource()
+        }
     }
 
     fun onClickStart(view: View?) {
@@ -45,28 +56,30 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animation) {
-                binding.tvResult.text = getResult(360 - degreeNew % 360)
+                binding.tvResult.text = textStorage.getResult(360 - degreeNew % 360)
+                selectAction()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
         binding.imvWheel.startAnimation(rotate)
+        selectAction()
     }
 
-    private fun getResult(degree: Int): String {
-        var text = ""
-        var factorX = 1
-        var factorY = 3
-        for (i in 0..6) {
-            if (degree >= FACTOR * factorX && degree < FACTOR * factorY) {
-                text = colorSectors[i]
-            }
-            factorX += 2
-            factorY += 2
+    private fun selectAction() {
+        when (binding.tvResult.text) {
+            "GREEN" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
+            "BLUE" -> "text"
+            "INDIGO" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
+            "VIOLET" -> "text"
+            "RED" -> "text"
+            "ORANGE" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
+            "YELLOW" -> "text"
         }
-        if (degree >= FACTOR * 73 && degree < 360 || degree >= 0 && degree < FACTOR * 1) text =
-            colorSectors[colorSectors.size - 1]
-        return text
+    }
+
+    private fun resetResource() {
+        binding.imvDrawable.clear()
     }
 }
 
