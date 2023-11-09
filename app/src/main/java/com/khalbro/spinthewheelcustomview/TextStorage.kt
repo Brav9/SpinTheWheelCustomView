@@ -5,13 +5,13 @@ import kotlin.random.Random
 
 object TextStorage {
 
-    var currentTextColorLiveData: MutableLiveData<String> = MutableLiveData()
-    private val colorSectors =
-        arrayOf("GREEN", "BLUE", "INDIGO", "VIOLET", "RED", "ORANGE", "YELLOW")
     private var degreeOld = 0
     private var degreeNew = 0
-    private var text: String? = ""
-    private var random: Random = Random
+    private var text = ""
+    private var random = Random
+    var currentTextColorLiveData = MutableLiveData<String>()
+    private val colorSectors =
+        arrayOf("GREEN", "BLUE", "INDIGO", "VIOLET", "RED", "ORANGE", "YELLOW")
 
     private fun getResult(degree: Int): String {
         currentTextColorLiveData.value = text
@@ -28,7 +28,7 @@ object TextStorage {
         if (degree >= FACTOR * 73 && degree < 360 || degree >= 0 && degree < FACTOR * 1) {
             textColorSectors()
         }
-        return text.toString()
+        return text
     }
 
     private fun textColorSectors(): String {

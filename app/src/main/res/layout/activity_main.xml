@@ -11,13 +11,11 @@
         android:id="@+id/imvWheel"
         android:layout_width="250dp"
         android:layout_height="200dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:onClick="onClickStart"
         app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imvArrow"
         app:srcCompat="@drawable/ic_color_circle" />
 
@@ -26,8 +24,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imvWheel"
+        app:layout_constraintStart_toStartOf="@+id/imvWheel"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_down_line" />
 
@@ -55,11 +53,13 @@
         android:id="@+id/btnReset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:text="reset"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imvWheel"
-        app:layout_constraintStart_toStartOf="@+id/imvWheel" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.khalbro.spinthewheelcustomview.DrawView
         android:id="@+id/cvDraw"
@@ -75,11 +75,13 @@
         android:id="@+id/seekBar"
         android:layout_width="100dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         android:max="100"
         android:progress="50"
         android:rotation="270"
         app:layout_constraintBottom_toBottomOf="@+id/imvWheel"
         app:layout_constraintEnd_toStartOf="@+id/imvWheel"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imvWheel" />
 
     <TextView
