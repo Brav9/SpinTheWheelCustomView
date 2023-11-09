@@ -9,18 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import coil.clear
 import coil.load
 import com.khalbro.spinthewheelcustomview.databinding.ActivityMainBinding
-import kotlin.random.Random
 
 const val FACTOR = 25.71f
 
 class MainActivity : AppCompatActivity() {
 
-    private val imvUrl = "https://placebear.com/200/300"
-
+    private val imvUrlOne = "https://loremflickr.com/1080/800"
+    private val imvUrlTwo = "https://loremflickr.com/1080/800/tree,moon"
+    private val imvUrlTree = "https://loremflickr.com/1080/800/desert,sand,cactus"
     private lateinit var binding: ActivityMainBinding
-    private var random: Random? = null
-    private var degreeOld = 0
-    private var degreeNew = 0
     private val textStorage = TextStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,23 +25,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvResult
-        binding.imvWheel
-        random = Random
-
-        selectAction()
-
         binding.btnReset.setOnClickListener {
             resetResource()
         }
     }
 
     fun onClickStart(view: View?) {
-        degreeOld = degreeNew % 360
-        degreeNew = random!!.nextInt(3600) + 720
         val rotate = RotateAnimation(
-            degreeOld.toFloat(), degreeNew.toFloat(), RotateAnimation.RELATIVE_TO_SELF,
-            0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f
+            textStorage.degreeOld().toFloat(),
+            textStorage.degreeNew().toFloat(),
+            RotateAnimation.RELATIVE_TO_SELF,
+            0.5f,
+            RotateAnimation.RELATIVE_TO_SELF,
+            0.5f
         )
         rotate.duration = 3600
         rotate.fillAfter = true
@@ -56,30 +49,43 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onAnimationEnd(animation: Animation) {
-                binding.tvResult.text = textStorage.getResult(360 - degreeNew % 360)
+                binding.tvResult.text = textStorage.getResultSector()
                 selectAction()
             }
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
+
         binding.imvWheel.startAnimation(rotate)
-        selectAction()
     }
 
     private fun selectAction() {
         when (binding.tvResult.text) {
-            "GREEN" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
-            "BLUE" -> "text"
-            "INDIGO" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
-            "VIOLET" -> "text"
-            "RED" -> "text"
-            "ORANGE" -> binding.imvDrawable.load(imvUrl) { placeholder(R.drawable.ic_launcher_background) }
-            "YELLOW" -> "text"
+            "GREEN" -> {
+                binding.imvDrawable.load(imvUrlOne) { placeholder(R.drawable.ic_launcher_background) }
+                binding.cvDraw.text = ""
+            }
+            "BLUE" -> {
+                binding.imvDrawable.clear()
+            }
+            "INDIGO" -> {
+                binding.imvDrawable.load(imvUrlTree) { placeholder(R.drawable.ic_launcher_background) }
+                binding.cvDraw.text = ""
+            }
+            "VIOLET" -> binding.imvDrawable.clear()
+            "RED" -> binding.imvDrawable.clear()
+            "ORANGE" -> {
+                binding.imvDrawable.load(imvUrlTwo) { placeholder(R.drawable.ic_launcher_background) }
+                binding.cvDraw.text = ""
+            }
+            "YELLOW" -> binding.imvDrawable.clear()
         }
     }
 
     private fun resetResource() {
         binding.imvDrawable.clear()
+        binding.tvResult.text = ""
+        binding.cvDraw.text = ""
     }
 }
 
