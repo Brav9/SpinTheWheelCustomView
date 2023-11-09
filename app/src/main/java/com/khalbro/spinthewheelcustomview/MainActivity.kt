@@ -5,6 +5,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import coil.clear
 import coil.load
@@ -24,6 +25,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        var startPoint = 0
+        var endPoint = 0
+
+        binding.seekBar.setOnSeekBarChangeListener(object  : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val scale:Float = ((progress/100.0f) + 1)
+                binding.imvWheel.scaleX = scale
+                binding.imvWheel.scaleY = scale
+                binding.tvVolume.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+               if (seekBar != null){
+                   startPoint =seekBar.progress
+               }
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (seekBar != null){
+                    endPoint =seekBar.progress
+                }
+            }
+        })
 
         binding.btnReset.setOnClickListener {
             resetResource()
@@ -62,20 +86,20 @@ class MainActivity : AppCompatActivity() {
     private fun selectAction() {
         when (binding.tvResult.text) {
             "GREEN" -> {
-                binding.imvDrawable.load(imvUrlOne) { placeholder(R.drawable.ic_launcher_background) }
+                binding.imvDrawable.load(imvUrlOne) { placeholder(R.drawable.ic_launcher_foreground) }
                 binding.cvDraw.text = ""
             }
             "BLUE" -> {
                 binding.imvDrawable.clear()
             }
             "INDIGO" -> {
-                binding.imvDrawable.load(imvUrlTree) { placeholder(R.drawable.ic_launcher_background) }
+                binding.imvDrawable.load(imvUrlTree) { placeholder(R.drawable.ic_launcher_foreground) }
                 binding.cvDraw.text = ""
             }
             "VIOLET" -> binding.imvDrawable.clear()
             "RED" -> binding.imvDrawable.clear()
             "ORANGE" -> {
-                binding.imvDrawable.load(imvUrlTwo) { placeholder(R.drawable.ic_launcher_background) }
+                binding.imvDrawable.load(imvUrlTwo) { placeholder(R.drawable.ic_launcher_foreground) }
                 binding.cvDraw.text = ""
             }
             "YELLOW" -> binding.imvDrawable.clear()
